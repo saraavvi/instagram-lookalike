@@ -6,11 +6,15 @@ export default function Post({ post }) {
   const initialComments = [];
   const [comments, setComments] = useState(initialComments);
 
+  const [count, setCount] = useState(post.likes);
+
+  function handleOnClick() {
+    setCount(count + 1);
+  }
+
   function addComment(comment) {
     const newComment = comment;
-
-    const newComments = comments.concat(newComment);
-
+    const newComments = [newComment, ...comments];
     setComments(newComments);
   }
 
@@ -22,15 +26,16 @@ export default function Post({ post }) {
         </div>
         <img className="card-img" src={post.imageURL} />
         <div className="card-body">
+          <p onDoubleClick={handleOnClick}> 🖤</p>
           <p>
-            <strong>{post.likes} likes</strong>
+            <strong>{count} likes</strong>
           </p>
 
           <h6>{post.title}</h6>
           <p>{post.description}</p>
           <div>
-            <strong>comments:</strong>
-            {comments.map((comment) => {
+            <strong>View all {comments.length} comments</strong>
+            {comments.slice(0, 3).map((comment) => {
               return <p className="mb-0">{comment}</p>;
             })}
           </div>
